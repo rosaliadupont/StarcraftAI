@@ -1,0 +1,1 @@
+This is a collaborative project involving Artificial Intelligent tecniques to enable our AI to make rational decisions in order to defeat the oponent. Our specialization will be Early-game reaper harrassment. 
