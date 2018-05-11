@@ -1,1 +1,5 @@
-This is a collaborative project involving Artificial Intelligent tecniques to enable our AI to make rational decisions in order to defeat the oponent. Our specialization will be Early-game reaper harrassment. 
+Run the command:
+
+      python -m pysc2.bin.agent --map Simple64 --agent smart_agent.SmartAgent --agent_race T --max_agent_steps 0 --norender
+
+And watch all of the episodes that the AI plays in!
