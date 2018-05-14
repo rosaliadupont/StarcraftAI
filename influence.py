@@ -57,7 +57,7 @@ class InfluenceMap:
         if creepAndLocation['creep']:
           dmax = unitDmaxArray[name]['oncreepdmax']
         else:
-        	dmax = unitDmaxArray[name]['offcreepdmax']
+          dmax = unitDmaxArray[name]['offcreepdmax']
         
       	reaperOutRuns = false
         #update cell with DPS determined by dMax
