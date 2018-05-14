@@ -33,19 +33,19 @@ class InfluenceMap():
     # Here is the feature dictionary that contains the features for each unit
     # The structure of each item in the dictionary is : 'name_of_unit' : UnitFeatures(attackRange, speedOffCreep, speedOnCreep, dps)
     unitFeaturesDict = {} 
-    unitFeaturesDict.add('Zergling': UnitFeatures(0.1, 4.13, 6.58, 100))
-    unitFeaturesArray.add('ZerglingSpeedBoost': UnitFeatures(0.1, 5.37, 8.55, 10))     
-    unitFeaturesDict.add('Roach': UnitFeatures(, , , ,))
-    unitFeaturesDict.add('Baneling': UnitFeatures(, , , ,))
-    unitFeaturesArray.add('Queen': UnitFeatures( , , ,))
-    unitFeaturesArray.add('Drone': UnitFeatures( , , ,))
+    unitFeaturesDict['Zergling'] = UnitFeatures(0.1, 4.13, 6.58, 100)
+    unitFeaturesArray['ZerglingSpeedBoost'] = UnitFeatures(0.1, 5.37, 8.55, 10)    
+    unitFeaturesDict['Roach'] =  UnitFeatures(, , ,)
+    unitFeaturesDict['Baneling'] = UnitFeatures(, , ,)
+    unitFeaturesArray['Queen'] = UnitFeatures( , , ,)
+    unitFeaturesArray['Drone'] = UnitFeatures( , , ,)
 
     # unitDmaxDict is the dictionary that contains the oncreepdmax and offcreepdmax for each unit
     unitDmaxDict = {}
     for name, unitFeatures in unitFeaturesDict:
       offdmax =  unitFeatures.attackRange + 1 + unitFeatures.speedOffCreep + self[reaper]['kitingTime']
       ondmax =  unitFeatures.attackRange + 1 + unitFeatures.speedOnCreep + self[reaper]['kitingTime']
-      unitDmaxArray.append(name: {'offcreepdmax': offdmax, 'oncreepdmax' : ondmax}) 
+      unitDmaxArray[name] = {'offcreepdmax': offdmax, 'oncreepdmax' : ondmax}
     
     
       
