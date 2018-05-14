@@ -33,10 +33,10 @@ class InfluenceMap():
     I_Map = [[0 for x in range(32)] for y in range(32)] # influence map
     
     # Here is the feature dictionary that contains the features for each unit
-    # The structure of each item in the dictionary is : 'name_of_unit' : unit_features_object()
+    # The structure of each item in the dictionary is : 'name_of_unit' : UnitFeatures(attackRange, speedOffCreep, speedOnCreep, dps)
     unitFeaturesDict = {} 
-    unitFeaturesDict.add('Zergling': UnitFeatures(NoBoostattackRange = 0.1, speedOffCreep = 4.13, speedOnCreep = 6.58, dps =  100), )
-    unitFeaturesArray.add('ZerglingSpeedBoost': UnitFeatures(attackRange = 0.1, speedOffCreep = 5.37, speedOnCreep = 8.55, dps = 10))     
+    unitFeaturesDict.add('Zergling': UnitFeatures(0.1, 4.13, 6.58, 100), )
+    unitFeaturesArray.add('ZerglingSpeedBoost': UnitFeatures(0.1, 5.37, 8.55, 10))     
     unitFeaturesDict.add('Roach': UnitFeatures(, , , ,))
     unitFeaturesDict.add('Baneling': UnitFeatures(, , , ,))
     unitFeaturesArray.add('Queen': UnitFeatures( , , ,))
