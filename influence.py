@@ -7,43 +7,57 @@ from pysc2.lib import features
 
 import time
 
+class position:
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
 
 class UnitFeatures:
   def __init__(self, attackRange, speed, dps):
     self.attackRange = range
     self.speed = speed
     self.dps = dps
+    
+  def dmax(self):
+    return 
 
+# The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the 
+# updateMap() giving it the information from the pysc2 api.
+  
 class InfluenceMap():
   
   def __init__(self):
     
-    reaper = {'speed': 0,'acceleration' : 0, 'deceleration': 0, 'attackTime': 0, 'turnTime': 0, 'kitingTime': 0}
+    reaper = {'speed': 5.25,'acceleration' : 1000, 'deceleration': 0, 'attackTime': .79, 'turnTime': 0, 'kitingTime': 0}
     I_Map = [[0 for x in range(32)] for y in range(32)] # influence map
-    unitFeaturesDict = {} # feature array for each unit
     
-    #Features: AttackRange, Speed, DPS
-    unitFeaturesDict.add('Zergling': UnitFeatures(attackRange = 0.1, speed = 4.13, dps = 10))
+    # Here is the feature dictionary that contains the features for each unit
+    unitFeaturesDict = {} 
+    unitFeaturesDict.add('Zergling': UnitFeatures(NoBoostattackRange = 0.1, speedOffCreep = 4.13, speedOnCreep = 6.58, dps =  100), )
+    unitFeaturesArray.add(UnitFeatures('ZerglingSpeedBoost', attackRange = 0.1, speedOffCreep = 5.37, speedOnCreep = 8.55, dps = 10))
     unitFeaturesDict.add('Roach': UnitFeatures(4, 3.15, 11.2))
     unitFeaturesDict.add('Baneling': UnitFeatures(0.25, 3.5, 20))
-    unitFeaturesDict.add('Queen': UnitFeatures(...))
-    # add more units pls
+    unitFeaturesArray.add(UnitFeatures('Queen', , , ,))
+    unitFeaturesArray.add(UnitFeatures('Drone', , , ,))
+
+    # unitDmaxDict is the dictionary that contains the oncreepdmax and offcreepdmax for each unit
+    unitDmaxDict = {}
+    for name, unitFeatures in unitFeaturesDict:
+      offdmax =  unitFeatures.attackRange + 1 + unitFeatures.speedOffCreep + self[reaper]['kitingTime']
+      ondmax =  unitFeatures.attackRange + 1 + unitFeatures.speedOnCreep + self[reaper]['kitingTime']
+      unitDmaxArray.append(name: {'offcreepdmax': offdmax, 'oncreepdmax' : ondmax}) 
     
-    #Realtime Enemy Observation
-    def updateMap(self, enemyCollection):
-      # loop through collection
-      for i in range(len(enemyCollection)):
-        
-        # get attack range, speed and dps of each
-        name = enemyCollection[i]
-        attackRange = self.unitFeaturesArray[name].attackRange
-        speed = self.unitFeaturesArray[name].speed
-        dps = self.unitFeaturesArray[name].dps
+    
       
-      	
-        #perform calculations to get Ienemy
+    #Realtime Enemy Observation
+    def updateMap(self, enemyDict):
+      # enemyDict is the dictionary containing the information of the enemies in the map
+      for name,creepAndLocation in enemyDict:
+        # get attack range, speed and dps of each
+        if creepAndLocation['creep']:
+          dmax = unitDmaxArray[name]['oncreepdmax']
+        else:
+        	dmax = unitDmaxArray[name]['offcreepdmax']
+        
       	reaperOutRuns = false
-        
-        
         #update cell with DPS determined by dMax
-      end loop if no more
