@@ -7,7 +7,7 @@ from pysc2.lib import features
 
 import time
 
-class position:
+class Position:
   def __init__(self, x, y):
     self.x = x
     self.y = y
@@ -23,7 +23,7 @@ class UnitFeatures:
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the 
 # updateMap() giving it the information from the pysc2 api.
   
-class InfluenceMap():
+class InfluenceMap:
   
   def __init__(self):
     
@@ -51,7 +51,7 @@ class InfluenceMap():
       
     #Realtime Enemy Observation
     def updateMap(self, enemyDict):
-      # enemyDict is the dictionary containing the information of the enemies in the form: {'name_unit' : { 'location': position(3,4), 'creep' : True }, ...} 
+      # enemyDict is the dictionary containing the information of the enemies in the form: {'name_unit' : { 'location': Position(3,4), 'creep' : True }, ...} 
       for name,creepAndLocation in enemyDict:
       
         if creepAndLocation['creep']:
