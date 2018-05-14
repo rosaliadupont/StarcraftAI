@@ -36,7 +36,8 @@ class InfluenceMap():
     # The structure of each item in the dictionary is : 'name_of_unit' : unit_features_object()
     unitFeaturesDict = {} 
     unitFeaturesDict.add('Zergling': UnitFeatures(NoBoostattackRange = 0.1, speedOffCreep = 4.13, speedOnCreep = 6.58, dps =  100), )
-    unitFeaturesArray.add('ZerglingSpeedBoost': UnitFeatures(attackRange = 0.1, speedOffCreep = 5.37, speedOnCreep = 8.55, dps = 10))     unitFeaturesDict.add('Roach': UnitFeatures(, , , ,))
+    unitFeaturesArray.add('ZerglingSpeedBoost': UnitFeatures(attackRange = 0.1, speedOffCreep = 5.37, speedOnCreep = 8.55, dps = 10))     
+    unitFeaturesDict.add('Roach': UnitFeatures(, , , ,))
     unitFeaturesDict.add('Baneling': UnitFeatures(, , , ,))
     unitFeaturesArray.add('Queen': UnitFeatures( , , ,))
     unitFeaturesArray.add('Drone': UnitFeatures( , , ,))
