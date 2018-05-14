@@ -18,9 +18,7 @@ class UnitFeatures:
     self.speedOffCreep = speedOffCreep
     self.speedOnCreep = speedOnCreep
     self.dps = dps
-    
-  def dmax(self):
-    return 
+   
 
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the 
 # updateMap() giving it the information from the pysc2 api.
