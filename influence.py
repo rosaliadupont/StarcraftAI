@@ -53,9 +53,9 @@ class InfluenceMap():
       
     #Realtime Enemy Observation
     def updateMap(self, enemyDict):
-      # enemyDict is the dictionary containing the information of the enemies in the map
+      # enemyDict is the dictionary containing the information of the enemies in the form: {'name_unit' : { 'location': position(3,4), 'creep' : True }, ...} 
       for name,creepAndLocation in enemyDict:
-        # get attack range, speed and dps of each
+      
         if creepAndLocation['creep']:
           dmax = unitDmaxArray[name]['oncreepdmax']
         else:
