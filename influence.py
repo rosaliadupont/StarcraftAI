@@ -13,9 +13,10 @@ class position:
     self.y = y
 
 class UnitFeatures:
-  def __init__(self, attackRange, speed, dps):
-    self.attackRange = range
-    self.speed = speed
+  def __init__(self, attackRange, speedOffCreep, speedOnCreep, dps):
+    self.attackRange = attackRange
+    self.speedOffCreep = speedOffCreep
+    self.speedOnCreep = speedOnCreep
     self.dps = dps
     
   def dmax(self):
@@ -32,13 +33,14 @@ class InfluenceMap():
     I_Map = [[0 for x in range(32)] for y in range(32)] # influence map
     
     # Here is the feature dictionary that contains the features for each unit
+    # The structure of each item in the dictionary is : 'name_of_unit' : unit_features_object()
     unitFeaturesDict = {} 
     unitFeaturesDict.add('Zergling': UnitFeatures(NoBoostattackRange = 0.1, speedOffCreep = 4.13, speedOnCreep = 6.58, dps =  100), )
-    unitFeaturesArray.add(UnitFeatures('ZerglingSpeedBoost', attackRange = 0.1, speedOffCreep = 5.37, speedOnCreep = 8.55, dps = 10))
-    unitFeaturesDict.add('Roach': UnitFeatures(4, 3.15, 11.2))
-    unitFeaturesDict.add('Baneling': UnitFeatures(0.25, 3.5, 20))
-    unitFeaturesArray.add(UnitFeatures('Queen', , , ,))
-    unitFeaturesArray.add(UnitFeatures('Drone', , , ,))
+#     unitFeaturesArray.add(UnitFeatures('ZerglingSpeedBoost', attackRange = 0.1, speedOffCreep = 5.37, speedOnCreep = 8.55, dps = 10))
+#     unitFeaturesDict.add('Roach': UnitFeatures(4, 3.15, 11.2))
+#     unitFeaturesDict.add('Baneling': UnitFeatures(0.25, 3.5, 20))
+#     unitFeaturesArray.add(UnitFeatures('Queen', , , ,))
+#     unitFeaturesArray.add(UnitFeatures('Drone', , , ,))
 
     # unitDmaxDict is the dictionary that contains the oncreepdmax and offcreepdmax for each unit
     unitDmaxDict = {}
