@@ -69,10 +69,11 @@ class QLearningTable:
             # choose best action
             state_action = self.q_table.ix[observation, :]
             
-            # some actions have the same value
+            # some actions have the same value and thus choosing a random from them all
             state_action = state_action.reindex(np.random.permutation(state_action.index))
             
             action = state_action.idxmax()
+            
         else:
             # choose random action
             action = np.random.choice(self.actions)
@@ -80,11 +81,16 @@ class QLearningTable:
         return action
 
     def learn(self, s, a, r, s_):
+        # s_ is the current state, s is previous state, and a is previous action that led us to s_
+        # this is where we update the q value of the previous action in the previous state
+
+        
         self.check_state_exist(s_)
         self.check_state_exist(s)
         
         q_predict = self.q_table.ix[s, a]
         q_target = r + self.gamma * self.q_table.ix[s_, :].max()
+        # this is getting the max q value among all the actions in the current state
         
         # update
         self.q_table.ix[s, a] += self.lr * (q_target - q_predict)
@@ -149,9 +155,23 @@ class SmartAgent(base_agent.BaseAgent):
                 reward += KILL_BUILDING_REWARD
                 
             self.qlearn.learn(str(self.previous_state), self.previous_action, reward, str(current_state))
-        
-        rl_action = self.qlearn.choose_action(str(current_state))
-        smart_action = smart_actions[rl_action]
+
+        #KITING ------------------------
+
+        can_kiting = False
+        # this is where we will need people working on kiting to send
+        # us their implementation that decides whether we can kite or not.
+
+        if (can_kiting):
+           # self.kiting_attack()
+           # but for now we'll consider it as no action
+           smart_action = ACTION_DO_NOTHINNG
+
+        #KITTING END -------------------
+           
+        else:
+           rl_action = self.qlearn.choose_action(str(current_state))
+           smart_action = smart_actions[rl_action]
         
         self.previous_killed_unit_score = killed_unit_score
         self.previous_killed_building_score = killed_building_score
@@ -215,4 +235,4 @@ class SmartAgent(base_agent.BaseAgent):
             
                 return actions.FunctionCall(_ATTACK_MINIMAP, [_NOT_QUEUED, [21, 24]])
         
-	return actions.FunctionCall(_NO_OP, [])
+        return actions.FunctionCall(_NO_OP, [])
