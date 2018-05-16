@@ -45,7 +45,7 @@ class InfluenceMap:
     for name, unitFeatures in unitFeaturesDict:
       offdmax =  unitFeatures.attackRange + 1 + unitFeatures.speedOffCreep + self[reaper]['kitingTime']
       ondmax =  unitFeatures.attackRange + 1 + unitFeatures.speedOnCreep + self[reaper]['kitingTime']
-      unitDmaxArray[name] = {'offcreepdmax': offdmax, 'oncreepdmax' : ondmax}
+      unitDmaxDict[name] = {'offcreepdmax': offdmax, 'oncreepdmax' : ondmax}
     
     
       
