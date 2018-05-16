@@ -23,7 +23,7 @@ class UnitFeatures:
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the 
 # updateMap() giving it the information from the pysc2 api.
   
-class InfluenceMap:
+class Influence:
   
   def __init__(self):
     
