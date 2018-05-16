@@ -34,11 +34,11 @@ class InfluenceMap:
     # The structure of each item in the dictionary is : 'name_of_unit' : UnitFeatures(attackRange, speedOffCreep, speedOnCreep, dps)
     unitFeaturesDict = {} 
     unitFeaturesDict['Zergling'] = UnitFeatures(0.1, 4.13, 6.58, 100)
-    unitFeaturesArray['ZerglingSpeedBoost'] = UnitFeatures(0.1, 5.37, 8.55, 10)    
+    unitFeaturesDict['ZerglingSpeedBoost'] = UnitFeatures(0.1, 5.37, 8.55, 10)    
     unitFeaturesDict['Roach'] =  UnitFeatures(, , ,)
     unitFeaturesDict['Baneling'] = UnitFeatures(, , ,)
-    unitFeaturesArray['Queen'] = UnitFeatures( , , ,)
-    unitFeaturesArray['Drone'] = UnitFeatures( , , ,)
+    unitFeaturesDict['Queen'] = UnitFeatures( , , ,)
+    unitFeaturesDict['Drone'] = UnitFeatures( , , ,)
 
     # unitDmaxDict is the dictionary that contains the oncreepdmax and offcreepdmax for each unit
     unitDmaxDict = {}
