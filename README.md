@@ -10,7 +10,7 @@ If you are writing the enemyDict data structure that will be used to call the In
     
     the dps of the enemy unit as a double
     
-The position of the unit in the map should already be in agreement to the scale of the 32x32 map that the InfluenceMap class uses. Keep in mind that this minimap is 32x32 squares who coordinates are relative to the minimap coordinates. This is very important. 
+The position of the unit in the map should already be in agreement to the scale of the 32x32 map that the InfluenceMap class uses. Keep in mind that this minimap is 32x32 squares with coordinates that are relative to the minimap's coordinates, not the screen's coordinates. This is very important. 
     
 Thanks :)
 
