@@ -1,9 +1,11 @@
+Beta is the branch with the most current version of the whole project.
+Be sure to pull from here before working on anything to make merges easy and see what is happening.
+
+This may not be a working version as people are still  implimenting things. 
+
+Currently has: 
 Reaper Agent
-
-See team drive for code outline of how this fits into everyone elses code. 
-
-This code is the main class that interfaces with the api and the game itself directly. It has high level funtions that use the influence map, unit stats, and any other classes. 
-
-Most functionality is implimented in the step function, which updates observations from the obs array, checks kiting, and determines an action for the reaper that is then sent to the game. 
+Enemy class
+Influence class 
 
 

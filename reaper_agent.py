@@ -45,8 +45,10 @@ class ReaperAgent(base_agent.BaseAgent):
         return action
 
     def set_control_groups(obs):
+        #TODO: set with sc2api
 
     def update_obs():
+        #TODO: impliment in sc2api, currently in pysc2 api 
         #fills enemy array
         #calls dmax
         #calls update map
