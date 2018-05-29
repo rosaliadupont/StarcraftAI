@@ -34,6 +34,7 @@ class ReaperAgent(base_agent.BaseAgent):
 
             if can_kite(target): #method in unittype class
                 action = kiting_attack(target)
+                #we eventually want to do unit.action(), it might be more appropiate to do this in the kiting_attack method though
             else:
                 #what do we do in the else case?
                 #if low health,run
