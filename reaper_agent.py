@@ -7,7 +7,6 @@ W3 = 1
 
 class ReaperAgent(sc2.BotAI):
     enemy_array = []
-    reaper_array = []
 
     def __init__(self):
         #creates enemy array and unitstats and influence map
@@ -45,7 +44,7 @@ class ReaperAgent(sc2.BotAI):
         #looks at enemy array and returns index of selected unit
         #TODO: convert to using sc2 data
         max_score = 0
-        # select_index ???
+        # select_index ??? did you mean select_index = index?
 
         for index, unit in enumerate(enemy_array):
             d = Distance3D(unit, self.reaper_array[index])
