@@ -37,8 +37,8 @@ class InfluenceMap:
       return (x,y)
 
     distances_to_coords = {}
-    for i in range(0,31):
-      for j in range(0,31):
+    for i in range(0,32):
+      for j in range(0,32):
         if self.I_Map[i][j] == 0:
           distance = math.sqrt((x - i) ** 2 + (y - j) ** 2)
           distances_to_coords[distance] = (i,j)
