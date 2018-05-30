@@ -1,4 +1,4 @@
-from .position import Point3
+from .position import Point3 # FIXME: where is position.py???
 import math
 
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the
@@ -29,7 +29,7 @@ class InfluenceMap:
             if distance <= enemy.d_max:
                 self.I_Map[x][y] += unit_stats.enemyStats[enemy.type]['DPS']
 
-  def get_secure_position(self,actual_position):
+  def get_secure_position(self, actual_position):
 
     # this function returns a tuple as (x,y) indicating
     # where the secure closest position is

@@ -1,7 +1,7 @@
 import sc2
-import enemy
-import InfluenceMap
-import Unit_Stats
+from .unit_stats import UnitStats
+from .influenceMap import InfluenceMap
+from .enemy import Enemy
 
 #Weights 3 > 1 > 2
 W1 = 0.75
@@ -10,6 +10,7 @@ W3 = 1
 
 class ReaperAgent(sc2.BotAI):
     enemy_array = []
+    reaper_array = []
 
     def on_start(self):
         #creates enemy array and unitstats and influence map
@@ -18,6 +19,9 @@ class ReaperAgent(sc2.BotAI):
         self.i_map = InfluenceMap(self.game_info.map_size)
 
     async def on_step(self, iteration):
+        update_obs()
+        target_obj = enemy_array[select_target(0 '''reaper_index''')]
+        target_name = 'Zergling' # FIXME: should use target_obj.type_id to refer to name string; eg: 84 --> 'Probe'
 
         for reaper in self.state.units(REAPER).idle:
             self.update_obs()
@@ -64,7 +68,7 @@ class ReaperAgent(sc2.BotAI):
         return target
 
     def kiting_attack(target, reaper):
-        position = self.get_secure_pos(reaper.positon)
+        position = InfluenceMap.get_secure_pos(reaper.positon)
         if position == actual_pos:
             await self.do(reaper.attack(target.positon))
         else:
