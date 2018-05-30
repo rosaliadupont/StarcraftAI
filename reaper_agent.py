@@ -18,13 +18,13 @@ class ReaperAgent(sc2.BotAI):
         self.i_map = InfluenceMap(self.game_info.map_size)
 
     async def on_step(self, iteration):
-
         update_obs()
         target_obj = enemy_array[select_target(0 '''reaper_index''')]
         target_name = 'Zergling' # FIXME: should use target_obj.type_id to refer to name string; eg: 84 --> 'Probe'
 
         if UnitStats.can_kite(target_name): #method in unittype class
             action = kiting_attack(target_obj)
+
             #we eventually want to do unit.action(), it might be more appropiate to do this in the kiting_attack method though
         else:
             #what do we do in the else case?
@@ -38,7 +38,7 @@ class ReaperAgent(sc2.BotAI):
         #fills enemy array
         #calls dmax
         #calls update map
-        enemy_array = []
+        self.enemy_array = []
         for unit in self.state.units.enemy.not_structure:
             if unit.is_visible:
                 enemy_array.append([unit.positon, self.unit_stats.d_max(unit.type_id)]) # FIXME: unit.type_id is not a string, it's an int (I think)
@@ -57,6 +57,7 @@ class ReaperAgent(sc2.BotAI):
             t = self.unit_stats.enemyStats[unit.type][tactical_threat]
             a = self.unit_stats[Reaper][DPS] / (reaper_array[r].health / self.unit_stats.enemyStats[unit.type][DPS])
 
+
             targeting_score = （a * W1） + （t * W2） + （d * W3）
 
             if targeting_score > max_score:
@@ -72,5 +73,6 @@ class ReaperAgent(sc2.BotAI):
         position = InfluenceMap.get_secure_pos(actual_pos)
         if position == actual_pos:
             await self.do(reaper_array[0].attack(target_obj))
+
         else:
-            await self.do(reaper_array[0].move(positon))
+            await self.do(self.reaper_array[0].move(positon))
