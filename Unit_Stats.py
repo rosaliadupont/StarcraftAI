@@ -22,4 +22,4 @@ class UnitStats:
     def d_max(target): # target is a string; eg. 'Zergling'
 
       k = 1; #confidence constant value, can be adjusted
-      return enemyStats[target]['attackRange'] + k + (enemyStats[target][speed] * kitingTime())
+      return enemyStats[target.name]['attackRange'] + k + (enemyStats[target.name][speed] * kitingTime())

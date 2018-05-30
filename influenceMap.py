@@ -23,8 +23,8 @@ class InfluenceMap:
       for y in range(0,32):
         self.I_Map[x][y] = 0
         for enemy in enemy_array: #[positon, d_max]
-            e_x = int(enemy[0].x * 32 / self.width) #convert to cell in i_map
-            e_y = int(enemy[0].y * 32 / self.height)
+            e_x = int(enemy.x * 32 / self.width) #convert to cell in i_map
+            e_y = int(enemy.y * 32 / self.height)
             distance = math.sqrt((e_x - x) ** 2 + (e_y - y) ** 2)
             if distance <= enemy.d_max:
                 self.I_Map[x][y] += unit_stats.enemyStats[enemy.type]['DPS']
