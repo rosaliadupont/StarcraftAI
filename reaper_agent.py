@@ -10,7 +10,6 @@ W3 = 1
 
 class ReaperAgent(sc2.BotAI):
     enemy_array = []
-    reaper_array = []
 
     def on_start(self):
         #creates enemy array and unitstats and influence map
@@ -19,17 +18,12 @@ class ReaperAgent(sc2.BotAI):
         self.i_map = InfluenceMap(self.game_info.map_size)
 
     async def on_step(self, iteration):
-        update_obs()
-        target_obj = enemy_array[select_target(0 '''reaper_index''')]
-        target_name = 'Zergling' # FIXME: should use target_obj.type_id to refer to name string; eg: 84 --> 'Probe'
-
         for reaper in self.state.units(REAPER).idle:
             self.update_obs()
-            target = self.select_target(reaper) #target is enemy
+            target = self.select_target(reaper) #target is unit object from sc2
 
-            if unit_stats.can_kite(target): #method in unittype class
-                action = self.kiting_attack(target, reaper)
-                #we eventually want to do unit.action(), it might be more appropiate to do this in the kiting_attack method though
+            if self.unit_stats.can_kite(target):
+                self.kiting_attack(target, reaper)
             else:
                 #what do we do in the else case?
                 #if low health,run
@@ -54,8 +48,8 @@ class ReaperAgent(sc2.BotAI):
 
         for unit in self.known_ enemy_units.not_structure:
             d = Distance3D(unit, reaper) #FIXME: where does Distance3D come from?
-            t = unit_stats.enemyStats[unit.name][tactical_threat]
-            a = unit_stats.Reaper[DPS] / (reaper.health / unit_stats.enemyStats[unit.name][DPS])
+            t = self.unit_stats.enemyStats[unit.name][tactical_threat]
+            a = self.unit_stats.Reaper[DPS] / (reaper.health / self.unit_stats.enemyStats[unit.name][DPS])
 
             targeting_score = （a * W1） + （t * W2） + （d * W3）
 

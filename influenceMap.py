@@ -1,4 +1,5 @@
-from .position import Point3 # FIXME: where is position.py???
+from sc2.position import Point3
+from .enemy import Enemy
 import math
 
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the
@@ -31,7 +32,7 @@ class InfluenceMap:
 
   def get_secure_position(self, actual_position):
 
-    # this function returns a tuple as (x,y) indicating
+    # this function returns a Point3 for the sc2 action to use indicating
     # where the secure closest position is
 
     r_x = int(actual_position.x * 32 / self.width)
@@ -55,4 +56,4 @@ class InfluenceMap:
     x = map_pos[0] * self.width / 32 + self.width / 64 #convert to map size
     y = map_pos[1] * self.height / 32 + self.height / 64
 
-    return Point3(x, y, 0)
+    return Point3(x, y, 0) #FIXME: not sure if this works, we need to return a position that the game understands, but idk if you can make a new Point3 object
