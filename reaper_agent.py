@@ -50,8 +50,8 @@ class ReaperAgent(sc2.BotAI):
         #returns position of most desirable enemy
         max_score = 0
 
-        for unit in self.known_enemy_units.not_structure: # what is self.known_enemy_units.not_structure?
-            d = Distance3D(unit, reaper) #FIXME: where does Distance3D come from?
+        for unit in self.enemy_array:
+            d = sc2::Distance3D(unit, reaper)
             t = self.unit_stats.enemyStats[unit.name]['tactical_threat']
             a = self.unit_stats.Reaper['DPS'] / (reaper.health / self.unit_stats.enemyStats[unit.name]['DPS'])
 
