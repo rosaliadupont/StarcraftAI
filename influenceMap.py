@@ -9,10 +9,10 @@ class InfluenceMap:
 
   def __init__(self, size):
 
-    I_Map = [[0 for x in range(32)] for y in range(32)] # influence map
+    self.I_Map = [[0 for x in range(32)] for y in range(32)] # influence map
     self.height = size.height
     self.width = size.width
-    print(I_Map)
+    #print(self.I_Map)
 
   def update_map(self, enemy_array, unit_stats):
 
@@ -38,7 +38,7 @@ class InfluenceMap:
     r_x = int(actual_position.x * 32 / self.width)
     r_y = int(actual_position.y * 32 / self.height)
 
-    if self.I_Map[x][y] == 0:
+    if self.I_Map[r_x][r_y] == 0:
       return actual_position
 
     distances_to_coords = {}
