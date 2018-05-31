@@ -75,8 +75,7 @@ class ReaperAgent(sc2.BotAI):
 
 
 def main():
-    sc2.run_game(sc2.maps.get("Sequencer LE"), [
-        # Human(Race.Terran),
+    sc2.run_game(sc2.maps.get("Daniels_map"), [
         Bot(Race.Terran, ReaperAgent()),
         Computer(Race.Zerg, Difficulty.Medium)
     ], realtime=True)
