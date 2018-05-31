@@ -1,7 +1,10 @@
 import sc2
+from sc2 import run_game, maps, Race, Difficulty
+from sc2.player import Bot, Computer
 from .unit_stats import UnitStats
 from .influenceMap import InfluenceMap
 from .enemy import Enemy
+
 
 #Weights 3 > 1 > 2
 W1 = 0.75
@@ -68,3 +71,15 @@ class ReaperAgent(sc2.BotAI):
             await self.do(reaper.attack(target.position))
         else:
             await self.do(reaper.move(position))
+
+
+
+def main():
+    sc2.run_game(sc2.maps.get("Sequencer LE"), [
+        # Human(Race.Terran),
+        Bot(Race.Terran, ReaperAgent()),
+        Computer(Race.Zerg, Difficulty.Medium)
+    ], realtime=True)
+
+if __name__ == '__main__':
+    main()
