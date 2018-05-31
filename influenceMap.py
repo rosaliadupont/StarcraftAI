@@ -1,30 +1,59 @@
+from sc2.position import Point3
+from .enemy import Enemy
 import math
 
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the
 # updateMap() giving it the information from the pysc2 api.
 
 class InfluenceMap:
-    I_map = []
 
-  def __init__(self):
+  def __init__(self, size):
 
-    I_Map = [[0 for x in range(32)] for y in range(32)] # influence map
+    self.I_Map = [[0 for x in range(32)] for y in range(32)] # influence map
+    self.height = size.height
+    self.width = size.width
+    #print(self.I_Map)
 
-  def update_map(self, enemy_array):
-    for enemy in enemyArray:
-      dmax = enemy.dmax
-      #TODO: convert screen to minimap position 
-      x = enemy.position[0]
-      y = enemy.position[1]
+  def update_map(self, enemy_array, unit_stats):
 
-      # the following embedded for loops serve to update the
-      # cell of the enemy and the 8 remaining neighboring cells
-      # in the influence map
+    # this embedded for loop iterates through the influence map
+    # entries and checks whether each enemy is within the range
+    # of damage, if it is then the entry gets added with this dps
 
-      for dy in range(-1, 2):
-        for dx in range(-1, 2):
-          distance = math.sqrt(dx ** 2 + dy ** 2)
-          if distance <= dmax:
-            self.I_Map[x + dx][y + dy] = enemy.dps
-          else:
-            self.I_Map[x + dx][y + dy] = 0
+    for x in range(0,32):
+      for y in range(0,32):
+        self.I_Map[x][y] = 0
+        for enemy in enemy_array: #[positon, d_max]
+            e_x = int(enemy.x * 32 / self.width) #convert to cell in i_map
+            e_y = int(enemy.y * 32 / self.height)
+            distance = math.sqrt((e_x - x) ** 2 + (e_y - y) ** 2)
+            if distance <= enemy.d_max:
+                self.I_Map[x][y] += unit_stats.enemyStats[enemy.type]['DPS']
+
+  def get_secure_position(self, actual_position):
+
+    # this function returns a Point3 for the sc2 action to use indicating
+    # where the secure closest position is
+
+    r_x = int(actual_position.x * 32 / self.width)
+    r_y = int(actual_position.y * 32 / self.height)
+
+    if self.I_Map[r_x][r_y] == 0:
+      return actual_position
+
+    distances_to_coords = {}
+    for x in range(0,32):
+      for y in range(0,32):
+        if self.I_Map[x][y] == 0:
+          distance = math.sqrt((r_x - x) ** 2 + (r_y - y) ** 2)
+          distances_to_coords[distance] = (x,y)
+
+    if len(distances_to_coords) == 0:
+      #-1 will be the error code returned
+      return -1
+
+    map_pos = distances_to_coords[min(distances_to_coords.keys())]
+    x = map_pos[0] * self.width / 32 + self.width / 64 #convert to map size
+    y = map_pos[1] * self.height / 32 + self.height / 64
+
+    return Point3(x, y, 0) #FIXME: not sure if this works, we need to return a position that the game understands, but idk if you can make a new Point3 object

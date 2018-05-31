@@ -1,40 +1,34 @@
-from pysc2.agents import base_agent
-from pysc2.lib import actions
-from pysc2.lib import features
+import sc2
+from sc2 import run_game, maps, Race, Difficulty
+from sc2.player import Bot, Computer
+from .unit_stats import UnitStats
+from .influenceMap import InfluenceMap
+from .enemy import Enemy
 
-#unit ids
-_REAPER = 49
 
-class ReaperAgent(base_agent.BaseAgent):
+#Weights 3 > 1 > 2
+W1 = 0.75
+W2 = 0.5
+W3 = 1
+
+class ReaperAgent(sc2.BotAI):
     enemy_array = []
-    reaper_array = []
-    unit_stats
-    i_map
-    control_not_set = True
-    not_centered = True
 
-    def __init__(self):
+    def on_start(self):
         #creates enemy array and unitstats and influence map
         #super function class super class init
-        unit_stats = UnitStats()
-        i_map = InfluenceMap()
+        self.unit_stats = UnitStats()
+        self.i_map = InfluenceMap(self.game_info.map_size)
 
-    def step(self, obs):
-        if control_not_set:
-            action = set_control_groups(obs)
-            control_not_set = False
+    async def on_step(self, iteration):
+        for reaper in self.state.units(REAPER).idle:
+            self.update_obs()
+            target = self.select_target(reaper) #target is unit object from sc2
 
-        elif not_centered:
-            action = select_n_center()
-            not_centered = False #TODO: check to see if still centered
-        else:
-            #main loop
-            update_obs() #assumes screen is already in position
-            target = select_target()
-
-            if can_kite(target): #method in unittype class
-                action = kiting_attack(target)
+            if self.unit_stats.can_kite(target):
+                self.kiting_attack(target, reaper)
             else:
+
                 #what do we do in the else case?
                 #if low health,run
                 #else attack
@@ -42,40 +36,49 @@ class ReaperAgent(base_agent.BaseAgent):
                 #cant run, fight until death
                 #search for enemies
 
-        return action
-
-    def set_control_groups(obs):
-        #TODO: set with sc2api
-
-    def update_obs():
-        #TODO: impliment in sc2api, currently in pysc2 api 
+    def update_obs(self):
         #fills enemy array
-        #calls dmax
+        #calls d_max
         #calls update map
-        for unit = obs.observation.feature_units:
-            if unit.alliance == _HOSTILE_ALLIANCE:
-                #store relevent data in Enemy class
-                new_enemy = Enemy(unit.health, [unit.x, unit.y], unit.unit_type, unit_stats.d_max(unit.unit_type))
-                enemy_array.append(new_enemy)
-            elif unit.type == _REAPER:
-                #update reaper in reaper array. We only have one reaper rn
-                reaper_array[0].update(unit.health, [unit.x, unit.y], unit.is_selected)
+        self.enemy_array = []
+        for unit in self.known_enemy_units.not_structure:
+             self.enemy_array.append(Enemy(unit.positon, unit.name, self.unit_stats.d_max(unit.name)))
 
-        i_map.update_map(enemy_array)
+        self.i_map.update_map(self.enemy_array, self.unit_stats)
 
-    def select_target():
-        #created by thomas
-        #looks at enemy array and returns index of selected unit
+    def select_target(self, reaper):
+        #returns position of most desirable enemy
+        max_score = 0
 
-    def kiting_attack(target):
-        position = get_secure_pos(actual_pos)
-        if position == actual_pos:
-            return attack(target)
+        for unit in self.known_enemy_units.not_structure: # what is self.known_enemy_units.not_structure?
+            d = Distance3D(unit, reaper) #FIXME: where does Distance3D come from?
+            t = self.unit_stats.enemyStats[unit.name]['tactical_threat']
+            a = self.unit_stats.Reaper['DPS'] / (reaper.health / self.unit_stats.enemyStats[unit.name]['DPS'])
+
+            targeting_score = (a * W1) + (t * W2) + (d * W3)
+
+            if targeting_score > max_score:
+                max_score = targeting_score
+                target = unit
+            else:
+                continue
+
+        return target
+
+    def kiting_attack(self, target, reaper):
+        position = InfluenceMap.get_secure_pos(reaper.positon)
+        if position == reaper.position:
+            await self.do(reaper.attack(target.position))
         else:
-            return move(position)
+            await self.do(reaper.move(position))
 
-    def attack(target):
-        #sets action to be used by api
 
-    def move(position):
-        #sets action to be used by api
+
+def main():
+    sc2.run_game(sc2.maps.get("Daniels_map"), [
+        Bot(Race.Terran, ReaperAgent()),
+        Computer(Race.Zerg, Difficulty.Medium)
+    ], realtime=True)
+
+if __name__ == '__main__':
+    main()
