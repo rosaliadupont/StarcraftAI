@@ -65,7 +65,7 @@ class ReaperAgent(sc2.BotAI):
 
         return target
 
-    def kiting_attack(self, target, reaper):
+    async def kiting_attack(self, target, reaper):
         position = InfluenceMap.get_secure_pos(reaper.position)
         if position == reaper.position:
             await self.do(reaper.attack(target.position))
