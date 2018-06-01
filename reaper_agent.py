@@ -1,5 +1,6 @@
 import sc2
 from sc2 import run_game, maps, Race, Difficulty
+from sc2.constants import *
 from sc2.player import Bot, Computer
 from Unit_Stats import UnitStats
 from influenceMap import InfluenceMap
@@ -24,17 +25,17 @@ class ReaperAgent(sc2.BotAI):
         for reaper in self.state.units(REAPER).idle:
             self.update_obs()
             target = self.select_target(reaper) #target is unit object from sc2
-
-            if self.unit_stats.can_kite(target):
-                self.kiting_attack(target, reaper)
-            else:
-                continue
-                #what do we do in the else case?
-                #if low health,run
-                #else attack
-                #check if you can kill them faster than they can
-                #cant run, fight until death
-                #search for enemies
+            if target != -1: #if we cant find an enemy
+                if self.unit_stats.can_kite(target.name):
+                    self.kiting_attack(target, reaper)
+                else:
+                    continue
+                    #what do we do in the else case?
+                    #if low health,run
+                    #else attack
+                    #check if you can kill them faster than they can
+                    #cant run, fight until death
+                    #search for enemies
 
     def update_obs(self):
         #fills enemy array
@@ -49,8 +50,8 @@ class ReaperAgent(sc2.BotAI):
     def select_target(self, reaper):
         #returns position of most desirable enemy
         max_score = 0
-
-        for unit in self.enemy_array:
+        target = -1 #if theres no enemies will return -1
+        for unit in self.known_enemy_units.not_structure:
             d = reaper.distance_to(unit.position)
             t = self.unit_stats.enemyStats[unit.name]['tactical_threat']
             a = self.unit_stats.Reaper['DPS'] / (reaper.health / self.unit_stats.enemyStats[unit.name]['DPS'])
@@ -60,7 +61,7 @@ class ReaperAgent(sc2.BotAI):
             if targeting_score > max_score:
                 max_score = targeting_score
                 target = unit
-        
+
         return target
 
     async def kiting_attack(self, target, reaper):
