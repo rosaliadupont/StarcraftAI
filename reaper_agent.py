@@ -28,7 +28,7 @@ class ReaperAgent(sc2.BotAI):
             if self.unit_stats.can_kite(target):
                 self.kiting_attack(target, reaper)
             else:
-
+                continue
                 #what do we do in the else case?
                 #if low health,run
                 #else attack
@@ -60,9 +60,7 @@ class ReaperAgent(sc2.BotAI):
             if targeting_score > max_score:
                 max_score = targeting_score
                 target = unit
-            else:
-                continue
-
+        
         return target
 
     async def kiting_attack(self, target, reaper):
