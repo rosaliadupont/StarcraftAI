@@ -1,5 +1,5 @@
 from sc2.position import Point3
-from .enemy import Enemy
+from enemy import Enemy
 import math
 
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the
