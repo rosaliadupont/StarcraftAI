@@ -51,7 +51,7 @@ class ReaperAgent(sc2.BotAI):
         max_score = 0
 
         for unit in self.enemy_array:
-            d = sc2::Distance3D(unit, reaper)
+            d = reaper.distance_to(unit.position)
             t = self.unit_stats.enemyStats[unit.name]['tactical_threat']
             a = self.unit_stats.Reaper['DPS'] / (reaper.health / self.unit_stats.enemyStats[unit.name]['DPS'])
 
@@ -66,7 +66,7 @@ class ReaperAgent(sc2.BotAI):
         return target
 
     def kiting_attack(self, target, reaper):
-        position = InfluenceMap.get_secure_pos(reaper.positon)
+        position = InfluenceMap.get_secure_pos(reaper.position)
         if position == reaper.position:
             await self.do(reaper.attack(target.position))
         else:
