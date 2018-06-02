@@ -28,7 +28,7 @@ class InfluenceMap:
 
 
     self.im1.set_data(np.random.randint(0, high=256, size=(32,32)))
-    plt.pause(0.05)
+    #plt.pause(0.05)
     
 
   def update_map(self, enemy_array, unit_stats):
@@ -48,7 +48,7 @@ class InfluenceMap:
                 self.I_Map[x][y] += unit_stats.enemyStats[enemy.type]['DPS']
     #pdb.set_trace()
     self.im1.set_data(self.I_Map)
-    plt.pause(0.05)
+    #plt.pause(0.05)
 
   def get_secure_pos(self, actual_position):
 
