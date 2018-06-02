@@ -23,6 +23,9 @@ class ReaperAgent(sc2.BotAI):
         self.i_map = InfluenceMap(self.game_info.map_size)
 
     async def on_step(self, iteration):
+        if iteration == 1:
+            self.game_info.pathing_grid.save_image("path_map.rgb")
+
 
         for reaper in self.state.units(REAPER):
             self.update_obs()
@@ -34,10 +37,9 @@ class ReaperAgent(sc2.BotAI):
                     #kiting attack
                     position = self.i_map.get_secure_pos(reaper.position)
                     if position == reaper.position:
-                        #if reaper.distance_to(target.position) > self.unit_stats.Reaper['attackRange']:
-                            #await self.do(reaper.move(reaper.position.towards(target.position)))
-                        #else:
                             await self.do(reaper.attack(target.position))
+                    if reaper.position.distance_to(target.position):
+                        await self.do(reaper.attack(target.position))
                     else:
                         await self.do(reaper.move(position))
                 else:
