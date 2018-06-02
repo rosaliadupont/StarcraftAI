@@ -12,15 +12,15 @@ class UnitStats:
 
     def kiting_time(self):
 
-        return Reaper['windUp'] + (1/Reaper['acceleration']) + (2 * math.pi  * (1/Reaper['turnRate']))
+        return self.Reaper['windUp'] + (1/self.Reaper['acceleration']) + (2 * math.pi  * (1/self.Reaper['turnRate']))
 
 
     def can_kite(self, target): # target is a string; eg. 'Zergling'
 
-        reaperFaster = Reaper['speed'] > enemyStats[target]['speed']
-        reaperOutrange = Reaper['attackRange'] > enemyStats[target]['attackRange'] + (enemyStats[target][speed] * kitingTime())
+        reaperFaster = self.Reaper['speed'] > self.enemyStats[target]['speed']
+        reaperOutrange = self.Reaper['attackRange'] > self.enemyStats[target]['attackRange'] + (self.enemyStats[target]['speed'] * self.kiting_time())
 
     def d_max(self, target): # target is a string; eg. 'Zergling'
 
       k = 1; #confidence constant value, can be adjusted
-      return enemyStats[target]['attackRange'] + k + (enemyStats[target][speed] * kitingTime())
+      return self.enemyStats[target]['attackRange'] + k + (self.enemyStats[target]['speed'] * self.kiting_time())

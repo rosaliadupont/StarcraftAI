@@ -3,4 +3,4 @@ class Enemy:
         self.x = positon.x
         self.y = positon.y
         self.type = type
-        self.dmax = dmax
+        self.d_max = dmax
