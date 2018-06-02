@@ -1,10 +1,9 @@
-from sc2.position import Point3
+from sc2.position import Point2
 from enemy import Enemy
 import math
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-import pdb
 
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the
 # updateMap() giving it the information from the pysc2 api.
@@ -51,7 +50,7 @@ class InfluenceMap:
     self.im1.set_data(self.I_Map)
     plt.pause(0.05)
 
-  def get_secure_position(self, actual_position):
+  def get_secure_pos(self, actual_position):
 
     # this function returns a Point3 for the sc2 action to use indicating
     # where the secure closest position is
@@ -77,4 +76,4 @@ class InfluenceMap:
     x = map_pos[0] * self.width / 32 + self.width / 64 #convert to map size
     y = map_pos[1] * self.height / 32 + self.height / 64
 
-    return Point3(x, y, 0) #FIXME: not sure if this works, we need to return a position that the game understands, but idk if you can make a new Point3 object
+    return Point2((x, y)) #FIXME: not sure if this works, we need to return a position that the game understands, but idk if you can make a new Point3 object

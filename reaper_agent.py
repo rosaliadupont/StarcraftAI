@@ -6,7 +6,7 @@ from Unit_Stats import UnitStats
 from influenceMap import InfluenceMap
 from enemy import Enemy
 import sys
-
+import pdb 
 
 #Weights 3 > 1 > 2
 W1 = 0.75
@@ -23,12 +23,23 @@ class ReaperAgent(sc2.BotAI):
         self.i_map = InfluenceMap(self.game_info.map_size)
 
     async def on_step(self, iteration):
-        for reaper in self.state.units(REAPER).idle:
+
+        for reaper in self.state.units(REAPER):
             self.update_obs()
             target = self.select_target(reaper) #target is unit object from sc2
             if target != -1: #if we cant find an enemy
+                
                 if self.unit_stats.can_kite(target.name):
-                    self.kiting_attack(target, reaper)
+                    #pdb.set_trace()
+                    #kiting attack
+                    position = self.i_map.get_secure_pos(reaper.position)
+                    if position == reaper.position:
+                        #if reaper.distance_to(target.position) > self.unit_stats.Reaper['attackRange']:
+                            #await self.do(reaper.move(reaper.position.towards(target.position)))
+                        #else:
+                            await self.do(reaper.attack(target.position))
+                    else:
+                        await self.do(reaper.move(position))
                 else:
                     continue
                     #what do we do in the else case?
@@ -37,7 +48,7 @@ class ReaperAgent(sc2.BotAI):
                     #check if you can kill them faster than they can
                     #cant run, fight until death
                     #search for enemies
-            else: 
+            elif reaper.is_idle: 
                 await self.do(reaper.move(reaper.position.random_on_distance(5)))
 
     def update_obs(self):
@@ -67,14 +78,15 @@ class ReaperAgent(sc2.BotAI):
 
         return target
 
-    async def kiting_attack(self, target, reaper):
+    """async def kiting_attack(self, target, reaper):
         position = InfluenceMap.get_secure_pos(reaper.position)
         if position == reaper.position:
-            print("attacking " + target.name + target.tag)
-            await self.do(reaper.attack(target.position))
+            if reaper.distance_to(target.position) > self.unit_stats.Reaper['attackRange']:
+                await self.do(reaper.move(reaper.position.towards(target.position)))
+            else:
+                await self.do(reaper.attack(target.position))
         else:
-            print("Moving to " + position)
-            await self.do(reaper.move(position))
+            await self.do(reaper.move(position))"""
 
 
 

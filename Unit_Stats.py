@@ -19,6 +19,7 @@ class UnitStats:
 
         reaperFaster = self.Reaper['speed'] > self.enemyStats[target]['speed']
         reaperOutrange = self.Reaper['attackRange'] > self.enemyStats[target]['attackRange'] + (self.enemyStats[target]['speed'] * self.kiting_time())
+        return reaperFaster and reaperOutrange 
 
     def d_max(self, target): # target is a string; eg. 'Zergling'
 
