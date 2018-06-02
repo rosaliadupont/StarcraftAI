@@ -1,6 +1,9 @@
 from sc2.position import Point3
 from enemy import Enemy
 import math
+import matplotlib.pyplot as plt
+import numpy as np
+import random
 
 # The influence class is a helper class to the agent class that is instantiated in the agent class. The agent class calls the
 # updateMap() giving it the information from the pysc2 api.
@@ -13,6 +16,15 @@ class InfluenceMap:
     self.height = size.height
     self.width = size.width
     #print(self.I_Map)
+    
+    #create axes
+    self.ax1 = plt.subplot(111)
+
+    #create image plot
+    self.im1 = self.ax1.imshow(np.random.randint(0, high=256, size=(32,32)))
+
+    plt.ion()
+    
 
   def update_map(self, enemy_array, unit_stats):
 
@@ -29,6 +41,8 @@ class InfluenceMap:
             distance = math.sqrt((e_x - x) ** 2 + (e_y - y) ** 2)
             if distance <= enemy.d_max:
                 self.I_Map[x][y] += unit_stats.enemyStats[enemy.type]['DPS']
+    
+    self.im1.set_data(np.random.randint(0, high=256, size=(32,32)))
 
   def get_secure_position(self, actual_position):
 
