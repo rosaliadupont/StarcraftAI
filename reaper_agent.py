@@ -38,7 +38,7 @@ class ReaperAgent(sc2.BotAI):
                     #cant run, fight until death
                     #search for enemies
             else: 
-                await self.do(reaper.move(reaper.position.random_on_distance(10)))
+                await self.do(reaper.move(reaper.position.random_on_distance(5)))
 
     def update_obs(self):
         #fills enemy array
@@ -70,18 +70,21 @@ class ReaperAgent(sc2.BotAI):
     async def kiting_attack(self, target, reaper):
         position = InfluenceMap.get_secure_pos(reaper.position)
         if position == reaper.position:
+            print("attacking " + target.name + target.tag)
             await self.do(reaper.attack(target.position))
         else:
+            print("Moving to " + position)
             await self.do(reaper.move(position))
 
 
 
 def main():
     if len(sys.argv) <= 1:
-        print("running with basic map BasicRect\n")
-        map_name = "BasicRect"
+        print("to run: reaper_agent.py \"map name\"")
+        sys.exit()
     else:
         map_name = sys.argv[1]
+        print("Running with " + map_name)
 
     sc2.run_game(sc2.maps.get(map_name), [
         Bot(Race.Terran, ReaperAgent()),
