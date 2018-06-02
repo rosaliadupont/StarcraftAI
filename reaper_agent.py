@@ -36,9 +36,9 @@ class ReaperAgent(sc2.BotAI):
                     #pdb.set_trace()
                     #kiting attack
                     position = self.i_map.get_secure_pos(reaper.position)
-                    if position == reaper.position:
-                            await self.do(reaper.attack(target.position))
-                    if reaper.position.distance_to(target.position):
+                    #if position == reaper.position:
+                    #        await self.do(reaper.attack(target.position))
+                    if reaper.position.distance_to(target.position) >= self.unit_stats.d_max('Zergling'):
                         await self.do(reaper.attack(target.position))
                     else:
                         await self.do(reaper.move(position))
