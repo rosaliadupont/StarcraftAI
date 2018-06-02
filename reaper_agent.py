@@ -5,6 +5,7 @@ from sc2.player import Bot, Computer
 from Unit_Stats import UnitStats
 from influenceMap import InfluenceMap
 from enemy import Enemy
+import sys
 
 
 #Weights 3 > 1 > 2
@@ -36,6 +37,8 @@ class ReaperAgent(sc2.BotAI):
                     #check if you can kill them faster than they can
                     #cant run, fight until death
                     #search for enemies
+            else: 
+                await self.do(reaper.move(reaper.position.random_on_distance(10)))
 
     def update_obs(self):
         #fills enemy array
@@ -43,7 +46,7 @@ class ReaperAgent(sc2.BotAI):
         #calls update map
         self.enemy_array = []
         for unit in self.known_enemy_units.not_structure:
-             self.enemy_array.append(Enemy(unit.positon, unit.name, self.unit_stats.d_max(unit.name)))
+             self.enemy_array.append(Enemy(unit.position, unit.name, self.unit_stats.d_max(unit.name)))
 
         self.i_map.update_map(self.enemy_array, self.unit_stats)
 
@@ -74,7 +77,13 @@ class ReaperAgent(sc2.BotAI):
 
 
 def main():
-    sc2.run_game(sc2.maps.get("BasicRect"), [
+    if len(sys.argv) <= 1:
+        print("running with basic map BasicRect\n")
+        map_name = "BasicRect"
+    else:
+        map_name = sys.argv[1]
+
+    sc2.run_game(sc2.maps.get(map_name), [
         Bot(Race.Terran, ReaperAgent()),
         Computer(Race.Zerg, Difficulty.Medium)
     ], realtime=True)
