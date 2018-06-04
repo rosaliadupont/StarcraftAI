@@ -37,12 +37,13 @@ class ReaperAgent(sc2.BotAI):
             #self.game_info.pathing_grid.save_image("path_map.rgb")
 
         # FIXME: each reaper needs its own attackActive
+        print("iteration:",iteration,"Time:",time.time())
         attackActive = {
             'timeOfCompletion' : 0.0,
             'currentlyActive' : False}
         
         for reaper in self.state.units(REAPER):
-            self.update_obs()
+            self.update_obs(reaper.position)
             target = self.select_target(reaper) #target is unit object from sc2
             #pdb.set_trace()
             if target != -1: #we found an enemy  
@@ -50,7 +51,7 @@ class ReaperAgent(sc2.BotAI):
                     #pdb.set_trace()
                     #kiting attack
                     position = self.i_map.get_secure_pos(reaper.position)
-
+                    #print("Distance:",target.distance_to(position))
                     #if position == reaper.position:
                     #        await self.do(reaper.attack(target.position))
 
@@ -88,11 +89,11 @@ class ReaperAgent(sc2.BotAI):
                     #check if you can kill them faster than they can
                     #cant run, fight until death
                     #search for enemies
-            else: 
+            elif reaper.is_idle: 
                 #print("Searching itr:",iteration)
                 await self.do(reaper.move(reaper.position.random_on_distance(5)))
 
-    def update_obs(self):
+    def update_obs(self, reaper_pos):
         #fills enemy array
         #calls d_max
         #calls update map
@@ -101,7 +102,7 @@ class ReaperAgent(sc2.BotAI):
              self.enemy_array.append(Enemy(unit.position, unit.name, self.unit_stats.d_max(unit.name)))
              #print("Zergling dmax",self.unit_stats.d_max(unit.name))
 
-        self.i_map.update_map(self.enemy_array, self.unit_stats)
+        self.i_map.update_map(self.enemy_array, self.unit_stats, reaper_pos)
 
     def select_target(self, reaper):
         #returns position of most desirable enemy
