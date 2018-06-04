@@ -19,7 +19,7 @@ class UnitStats:
             'DPS' : 7.27
         }
     Zergling = {
-            'speed' : 2.95,
+            'speed' : 1.5,
             'creepSpeed' : 3.84,
             'acceleration' : 1000,
             'deceleration' : 0,
