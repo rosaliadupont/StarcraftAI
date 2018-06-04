@@ -52,10 +52,10 @@ class InfluenceMap:
     # this function returns a Point3 for the sc2 action to use indicating
     # where the secure closest position is
 
-    r_x = int(actual_position.x)
-    r_y = int(actual_position.y)
+    r_x = actual_position.x
+    r_y = actual_position.y
 
-    if self.I_Map[r_x][r_y] == 0:
+    if self.I_Map[int(r_x)][int(r_y)] == 0:
       return actual_position
 
     distances_to_coords = {}
