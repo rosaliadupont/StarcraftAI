@@ -23,11 +23,13 @@ class ReaperAgent(sc2.BotAI):
         #super function class super class init
         self.unit_stats = UnitStats()
         self.i_map = InfluenceMap(self.game_info.map_size)
+        #print("Map size:",self.game_info.map_size)
+        #print("cell size:",self.game_info.map_size.height / 32, "by",self.game_info.map_size.width / 32)
 
     async def on_step(self, iteration):
         #if iteration == 1:
             #self.game_info.pathing_grid.save_image("path_map.rgb")
-        await asyncio.sleep(1)
+        #await asyncio.sleep(1)
         for reaper in self.state.units(REAPER).idle:
             self.update_obs()
             target = self.select_target(reaper) #target is unit object from sc2
@@ -37,10 +39,14 @@ class ReaperAgent(sc2.BotAI):
                     #pdb.set_trace()
                     #kiting attack
                     position = self.i_map.get_secure_pos(reaper.position)
+                    #print("reaper pos", reaper.position, "moving to", position,"zerging at",target.position)
+                    #print("Actual distance:",target.distance_to(position))
                     if position == reaper.position:
                     #if reaper.position.distance_to(target.position) >= self.unit_stats.d_max(target.name):
+                        #print("Attacking itr:",iteration)
                         await self.do(reaper.attack(target.position))
                     else:
+                        #print("Moving itr:",iteration)
                         await self.do(reaper.move(position))
                 else:
                     continue
@@ -51,6 +57,7 @@ class ReaperAgent(sc2.BotAI):
                     #cant run, fight until death
                     #search for enemies
             else: 
+                #print("Searching itr:",iteration)
                 await self.do(reaper.move(reaper.position.random_on_distance(5)))
 
     def update_obs(self):
@@ -60,6 +67,7 @@ class ReaperAgent(sc2.BotAI):
         self.enemy_array = []
         for unit in self.known_enemy_units.not_structure:
              self.enemy_array.append(Enemy(unit.position, unit.name, self.unit_stats.d_max(unit.name)))
+             #print("Zergling dmax",self.unit_stats.d_max(unit.name))
 
         self.i_map.update_map(self.enemy_array, self.unit_stats)
 
@@ -103,7 +111,7 @@ def main():
     sc2.run_game(sc2.maps.get(map_name), [
         Bot(Race.Terran, ReaperAgent()),
         Computer(Race.Zerg, Difficulty.Medium)
-    ], realtime=False)
+    ], realtime=True)
 
 if __name__ == '__main__':
     main()
