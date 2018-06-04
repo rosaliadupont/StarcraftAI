@@ -9,6 +9,8 @@ from enemy import Enemy
 import sys
 import pdb 
 import asyncio
+import pdb
+import time
 
 #Weights 3 > 1 > 2
 W1 = 0.75
@@ -30,7 +32,16 @@ class ReaperAgent(sc2.BotAI):
         #if iteration == 1:
             #self.game_info.pathing_grid.save_image("path_map.rgb")
         #await asyncio.sleep(1)
-        for reaper in self.state.units(REAPER).idle:
+        #for reaper in self.state.units(REAPER).idle:#
+        #if iteration == 1:
+            #self.game_info.pathing_grid.save_image("path_map.rgb")
+
+        # FIXME: each reaper needs its own attackActive
+        attackActive = {
+            'timeOfCompletion' : 0.0,
+            'currentlyActive' : False}
+        
+        for reaper in self.state.units(REAPER):
             self.update_obs()
             target = self.select_target(reaper) #target is unit object from sc2
             #pdb.set_trace()
@@ -39,12 +50,33 @@ class ReaperAgent(sc2.BotAI):
                     #pdb.set_trace()
                     #kiting attack
                     position = self.i_map.get_secure_pos(reaper.position)
-                    #print("reaper pos", reaper.position, "moving to", position,"zerging at",target.position)
-                    #print("Actual distance:",target.distance_to(position))
-                    if position == reaper.position:
-                    #if reaper.position.distance_to(target.position) >= self.unit_stats.d_max(target.name):
-                        #print("Attacking itr:",iteration)
+
+                    #if position == reaper.position:
+                    #        await self.do(reaper.attack(target.position))
+
+                    
+                    distToTarget = reaper.position.distance_to(target.position)
+                    reaperRange = self.unit_stats.units['Reaper']['attackRange']
+                    currentTime = time.time()
+                    kitingTime = self.unit_stats.kiting_time(target.name)
+                    d_max = self.unit_stats.d_max(target.name)
+                    reaperSpeed = self.unit_stats.units['Reaper']['speed']
+                    
+                    if currentTime > attackActive['timeOfCompletion']:
+                        attackActive['currentlyActive'] = False
+                        
+                    if distToTarget >= d_max \
+                       and not attackActive['currentlyActive']:
+                       
+                        attackActive['currentlyActive'] = True
+                        if distToTarget > reaperRange:
+                            attackActive['timeOfCompletion'] = currentTime \
+                            + kitingTime + (distToTarget - reaperRange) * reaperSpeed
+                        else:
+                            attackActive['timeOfCompletion'] = currentTime + kitingTime
+
                         await self.do(reaper.attack(target.position))
+                        
                     else:
                         #print("Moving itr:",iteration)
                         await self.do(reaper.move(position))

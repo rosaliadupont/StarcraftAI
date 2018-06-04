@@ -28,7 +28,7 @@ class InfluenceMap:
 
 
     self.im1.set_data(np.random.randint(0, high=256, size=(self.width,self.height)))
-    plt.pause(0.05)
+    #plt.pause(0.05)
     
 
   def update_map(self, enemy_array, unit_stats):
@@ -39,7 +39,7 @@ class InfluenceMap:
 
     for x in range(self.width):
       for y in range(self.height):
-        print("Width:",self.width,"Height:",self.height,"X:",x,"Y:",y)
+        #print("Width:",self.width,"Height:",self.height,"X:",x,"Y:",y)
         self.I_Map[x][y] = 0
         for enemy in enemy_array: #[positon, d_max]
             distance = math.sqrt((enemy.x - x) ** 2 + (enemy.y - y) ** 2)
@@ -47,7 +47,7 @@ class InfluenceMap:
                 self.I_Map[x][y] += unit_stats.units[enemy.type]['DPS']
     #pdb.set_trace()
     self.im1.set_data(self.I_Map)
-    plt.pause(0.05)
+    #plt.pause(0.05)
 
   def get_secure_pos(self, actual_position):
 
