@@ -1,3 +1,4 @@
+import time
 import sc2
 from sc2 import run_game, maps, Race, Difficulty
 from sc2.constants import *
@@ -7,6 +8,7 @@ from influenceMap import InfluenceMap
 from enemy import Enemy
 import sys
 import pdb 
+import asyncio
 
 #Weights 3 > 1 > 2
 W1 = 0.75
@@ -23,22 +25,20 @@ class ReaperAgent(sc2.BotAI):
         self.i_map = InfluenceMap(self.game_info.map_size)
 
     async def on_step(self, iteration):
-        if iteration == 1:
-            self.game_info.pathing_grid.save_image("path_map.rgb")
-
-
-        for reaper in self.state.units(REAPER):
+        #if iteration == 1:
+            #self.game_info.pathing_grid.save_image("path_map.rgb")
+        await asyncio.sleep(1)
+        for reaper in self.state.units(REAPER).idle:
             self.update_obs()
             target = self.select_target(reaper) #target is unit object from sc2
-            if target != -1: #if we cant find an enemy
-                
+            #pdb.set_trace()
+            if target != -1: #we found an enemy  
                 if self.unit_stats.can_kite(target.name):
                     #pdb.set_trace()
                     #kiting attack
                     position = self.i_map.get_secure_pos(reaper.position)
-                    #if position == reaper.position:
-                    #        await self.do(reaper.attack(target.position))
-                    if reaper.position.distance_to(target.position) >= self.unit_stats.d_max('Zergling'):
+                    if position == reaper.position:
+                    #if reaper.position.distance_to(target.position) >= self.unit_stats.d_max(target.name):
                         await self.do(reaper.attack(target.position))
                     else:
                         await self.do(reaper.move(position))
@@ -50,7 +50,7 @@ class ReaperAgent(sc2.BotAI):
                     #check if you can kill them faster than they can
                     #cant run, fight until death
                     #search for enemies
-            elif reaper.is_idle: 
+            else: 
                 await self.do(reaper.move(reaper.position.random_on_distance(5)))
 
     def update_obs(self):
@@ -69,8 +69,8 @@ class ReaperAgent(sc2.BotAI):
         target = -1 #if theres no enemies will return -1
         for unit in self.known_enemy_units.not_structure:
             d = reaper.distance_to(unit.position)
-            t = self.unit_stats.enemyStats[unit.name]['tactical_threat']
-            a = self.unit_stats.Reaper['DPS'] / (reaper.health / self.unit_stats.enemyStats[unit.name]['DPS'])
+            t = self.unit_stats.units[unit.name]['tactical_threat']
+            a = self.unit_stats.units['Reaper']['DPS'] / (reaper.health / self.unit_stats.units[unit.name]['DPS'])
 
             targeting_score = (a * W1) + (t * W2) + (d * W3)
 
@@ -103,7 +103,7 @@ def main():
     sc2.run_game(sc2.maps.get(map_name), [
         Bot(Race.Terran, ReaperAgent()),
         Computer(Race.Zerg, Difficulty.Medium)
-    ], realtime=True)
+    ], realtime=False)
 
 if __name__ == '__main__':
     main()

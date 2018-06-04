@@ -45,7 +45,7 @@ class InfluenceMap:
             e_y = int(enemy.y * 32 / self.height)
             distance = math.sqrt((e_x - x) ** 2 + (e_y - y) ** 2)
             if distance <= enemy.d_max:
-                self.I_Map[x][y] += unit_stats.enemyStats[enemy.type]['DPS']
+                self.I_Map[x][y] += unit_stats.units[enemy.type]['DPS']
     #pdb.set_trace()
     self.im1.set_data(self.I_Map)
     #plt.pause(0.05)
